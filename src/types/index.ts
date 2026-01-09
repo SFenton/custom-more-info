@@ -62,6 +62,8 @@ export interface CustomMoreInfoConfig {
     unhide_cancel_button?: ConditionalFilter;
     hide_script_title?: ConditionalFilter;
     unhide_script_title?: ConditionalFilter;
+    stacked_labels?: ConditionalFilter;
+    unstacked_labels?: ConditionalFilter;
     maximized_size?: ConditionalFilter;
     default_size?: ConditionalFilter;
 }
@@ -80,6 +82,7 @@ export interface InternalConfig {
     hide_state_header: boolean;
     hide_cancel_button: boolean;
     hide_script_title: boolean;
+    stacked_labels: boolean;
     maximized_size: boolean;
 }
 

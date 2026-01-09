@@ -44,6 +44,18 @@ export const getHiddenStyle = (elementName: string): string => {
     }`;
 };
 
+export const getStackedLabelsStyle = (): string => {
+    return `${SELECTOR.HA_SETTINGS_ROW} {
+        display: block !important;
+    }
+    ${SELECTOR.HA_SETTINGS_ROW}::part(body) {
+        margin-bottom: 8px;
+    }
+    ${SELECTOR.HA_SETTINGS_ROW} [slot="heading"] {
+        font-weight: 500;
+    }`;
+};
+
 export const getTranslations = async(
 	ha: HomeAssistant
 ): Promise<Record<string, string>> => {

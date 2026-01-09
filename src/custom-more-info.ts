@@ -31,6 +31,7 @@ import {
     addStyle,
     removeStyle,
     getHiddenStyle,
+    getStackedLabelsStyle,
     getTranslations,
     addDataSelectors
 } from '@utilities';
@@ -316,7 +317,7 @@ class CustomMoreInfo {
                 }
             });
         // Query for state header (shows "Idle", timestamps, etc.) and other script dialog elements
-        if (internalConfig.hide_state_header || internalConfig.hide_cancel_button || internalConfig.hide_script_title) {
+        if (internalConfig.hide_state_header || internalConfig.hide_cancel_button || internalConfig.hide_script_title || internalConfig.stacked_labels) {
             // Use deepQuery directly from HA_DIALOG_CONTENT since we need to traverse
             // multiple shadow roots: ha-more-info-info > more-info-content > more-info-script
             HA_DIALOG_CONTENT
@@ -340,6 +341,9 @@ class CustomMoreInfo {
                         }
                         if (internalConfig.hide_script_title) {
                             styles.push(getHiddenStyle(SELECTOR.SCRIPT_TITLE));
+                        }
+                        if (internalConfig.stacked_labels) {
+                            styles.push(getStackedLabelsStyle());
                         }
                         if (styles.length > 0) {
                             addStyle(container, styles.join(''));
@@ -541,6 +545,7 @@ class CustomMoreInfo {
             state_header: false,
             cancel_button: false,
             script_title: false,
+            stacked_labels: false,
             maximized_size: false
         };
 
@@ -771,6 +776,29 @@ class CustomMoreInfo {
             internalConfig.script_title = false;
         }
 
+        // Stacked labels (labels above inputs instead of beside)
+        if (
+            this._anyConfigMatch(
+                this._config?.stacked_labels,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.stacked_labels = true;
+        }
+
+        if (
+            this._anyConfigMatch(
+                this._config?.unstacked_labels,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.stacked_labels = false;
+        }
+
         this._conditionalConfig[entityId] = {
             hide_history: internalConfig.history,
             hide_logbook: internalConfig.logbook,
@@ -785,6 +813,7 @@ class CustomMoreInfo {
             hide_state_header: internalConfig.state_header,
             hide_cancel_button: internalConfig.cancel_button,
             hide_script_title: internalConfig.script_title,
+            stacked_labels: internalConfig.stacked_labels,
             maximized_size: internalConfig.maximized_size
         };
 
