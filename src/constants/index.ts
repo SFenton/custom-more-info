@@ -15,7 +15,10 @@ export enum SELECTOR {
     MENU_ITEM = 'ha-icon-button',
     MENU_ITEM_ICON = 'mwc-icon-button',
     MORE_INFO_HEADER = 'ha-dialog-header',
-    MORE_INFO_HEADER_HISTORY_ICON = 'ha-icon-button[data-custom-selector="DIALOG_HISTORY"]'
+    MORE_INFO_HEADER_HISTORY_ICON = 'ha-icon-button[data-custom-selector="DIALOG_HISTORY"]',
+    MORE_INFO_HEADER_SETTINGS_ICON = 'ha-icon-button[data-custom-selector="DIALOG_SETTINGS"]',
+    MORE_INFO_HEADER_MORE_MENU = 'ha-button-menu',
+    MORE_INFO_STATE_HEADER = 'ha-more-info-state-header'
 }
 
 export enum MENU {

@@ -51,6 +51,12 @@ Available configuration options:
 * `auto_hide_header_history_icon`
 * `hide_header_history_icon`
 * `unhide_header_history_icon`
+* `hide_header_settings_icon`
+* `unhide_header_settings_icon`
+* `hide_header_more_menu`
+* `unhide_header_more_menu`
+* `hide_state_header`
+* `unhide_state_header`
 
 * `hide_history`
 * `unhide_history`
@@ -68,7 +74,11 @@ custom_more_info:
   auto_hide_header_history_icon: true
   hide_header_history_icon:
     # parameters
-  hide_header_history_icon:
+  hide_header_settings_icon:
+    # parameters
+  hide_header_more_menu:
+    # parameters
+  hide_state_header:
     # parameters
 
   filter_all: true

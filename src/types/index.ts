@@ -52,6 +52,12 @@ export interface CustomMoreInfoConfig {
     hide_header_history_icon?: ConditionalFilter;
     unhide_header_history_icon?: ConditionalFilter;
     auto_hide_header_history_icon?: boolean;
+    hide_header_settings_icon?: ConditionalFilter;
+    unhide_header_settings_icon?: ConditionalFilter;
+    hide_header_more_menu?: ConditionalFilter;
+    unhide_header_more_menu?: ConditionalFilter;
+    hide_state_header?: ConditionalFilter;
+    unhide_state_header?: ConditionalFilter;
     maximized_size?: ConditionalFilter;
     default_size?: ConditionalFilter;
 }
@@ -65,6 +71,9 @@ export interface InternalConfig {
     hide_history: boolean;
     hide_logbook: boolean;
     hide_header_history_icon: boolean;
+    hide_header_settings_icon: boolean;
+    hide_header_more_menu: boolean;
+    hide_state_header: boolean;
     maximized_size: boolean;
 }
 

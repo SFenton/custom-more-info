@@ -315,7 +315,26 @@ class CustomMoreInfo {
                     this._debug('this dialog doesn‘t have history or logbook or they have not been found.');
                 }
             });
-            
+        // Query for state header (shows "Idle", timestamps, etc.)
+        if (internalConfig.hide_state_header) {
+            HA_DIALOG_CONTENT
+                .selector
+                .$
+                .query(SELECTOR.MORE_INFO_CONTENT)
+                .deepQuery(SELECTOR.MORE_INFO_STATE_HEADER)
+                .element
+                .then((stateHeader: Element): void => {
+                    this._debug('finished the task of querying the state header, the result is');
+                    if (stateHeader) {
+                        this._debug('state header has been found');
+                        this._debug(stateHeader);
+                        const container = stateHeader.parentElement || stateHeader.getRootNode() as ShadowRoot;
+                        addStyle(container, getHiddenStyle(SELECTOR.MORE_INFO_STATE_HEADER));
+                    } else {
+                        this._debug('this dialog does not have a state header or it has not been found.');
+                    }
+                });
+        }            
     }
 
     protected filterAttributes(attributes: Attributes): void {
@@ -387,8 +406,22 @@ class CustomMoreInfo {
             return;
         }
 
+        const styles: string[] = [];
+
         if (internalConfig.hide_header_history_icon) {
-            addStyle(content, getHiddenStyle(SELECTOR.MORE_INFO_HEADER_HISTORY_ICON));
+            styles.push(getHiddenStyle(SELECTOR.MORE_INFO_HEADER_HISTORY_ICON));
+        }
+
+        if (internalConfig.hide_header_settings_icon) {
+            styles.push(getHiddenStyle(SELECTOR.MORE_INFO_HEADER_SETTINGS_ICON));
+        }
+
+        if (internalConfig.hide_header_more_menu) {
+            styles.push(getHiddenStyle(SELECTOR.MORE_INFO_HEADER_MORE_MENU));
+        }
+
+        if (styles.length > 0) {
+            addStyle(content, styles.join(''));
         } else {
             removeStyle(content);
         }
@@ -489,6 +522,9 @@ class CustomMoreInfo {
             history: false,
             logbook: false,
             header_history_icon: false,
+            header_settings_icon: false,
+            header_more_menu: false,
+            state_header: false,
             maximized_size: false
         };
 
@@ -604,6 +640,75 @@ class CustomMoreInfo {
             internalConfig.maximized_size = false;
         }
 
+        // Settings icon in header
+        if (
+            this._anyConfigMatch(
+                this._config?.hide_header_settings_icon,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.header_settings_icon = true;
+        }
+
+        if (
+            this._anyConfigMatch(
+                this._config?.unhide_header_settings_icon,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.header_settings_icon = false;
+        }
+
+        // More menu (three dots) in header
+        if (
+            this._anyConfigMatch(
+                this._config?.hide_header_more_menu,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.header_more_menu = true;
+        }
+
+        if (
+            this._anyConfigMatch(
+                this._config?.unhide_header_more_menu,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.header_more_menu = false;
+        }
+
+        // State header (shows state like "Idle" and last changed time)
+        if (
+            this._anyConfigMatch(
+                this._config?.hide_state_header,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.state_header = true;
+        }
+
+        if (
+            this._anyConfigMatch(
+                this._config?.unhide_state_header,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.state_header = false;
+        }
+
         this._conditionalConfig[entityId] = {
             hide_history: internalConfig.history,
             hide_logbook: internalConfig.logbook,
@@ -613,6 +718,9 @@ class CustomMoreInfo {
                 internalConfig.history &&
                 internalConfig.logbook
             ),
+            hide_header_settings_icon: internalConfig.header_settings_icon,
+            hide_header_more_menu: internalConfig.header_more_menu,
+            hide_state_header: internalConfig.state_header,
             maximized_size: internalConfig.maximized_size
         };
 
