@@ -20,7 +20,8 @@ export enum SELECTOR {
     MORE_INFO_HEADER_MORE_MENU = 'ha-button-menu',
     MORE_INFO_STATE_HEADER = 'ha-more-info-state-header',
     SCRIPT_QUEUE = '.queue',
-    SCRIPT_CANCEL_BUTTON = 'ha-control-button.cancel-button'
+    SCRIPT_CANCEL_BUTTON = 'ha-control-button.cancel-button',
+    SCRIPT_TITLE = '.fields > .title'
 }
 
 export enum MENU {

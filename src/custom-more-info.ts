@@ -315,8 +315,8 @@ class CustomMoreInfo {
                     this._debug('this dialog doesn‘t have history or logbook or they have not been found.');
                 }
             });
-        // Query for state header (shows "Idle", timestamps, etc.)
-        if (internalConfig.hide_state_header || internalConfig.hide_cancel_button) {
+        // Query for state header (shows "Idle", timestamps, etc.) and other script dialog elements
+        if (internalConfig.hide_state_header || internalConfig.hide_cancel_button || internalConfig.hide_script_title) {
             // Use deepQuery directly from HA_DIALOG_CONTENT since we need to traverse
             // multiple shadow roots: ha-more-info-info > more-info-content > more-info-script
             HA_DIALOG_CONTENT
@@ -337,6 +337,9 @@ class CustomMoreInfo {
                         }
                         if (internalConfig.hide_cancel_button) {
                             styles.push(getHiddenStyle(SELECTOR.SCRIPT_CANCEL_BUTTON));
+                        }
+                        if (internalConfig.hide_script_title) {
+                            styles.push(getHiddenStyle(SELECTOR.SCRIPT_TITLE));
                         }
                         if (styles.length > 0) {
                             addStyle(container, styles.join(''));
@@ -537,6 +540,7 @@ class CustomMoreInfo {
             header_more_menu: false,
             state_header: false,
             cancel_button: false,
+            script_title: false,
             maximized_size: false
         };
 
@@ -744,6 +748,29 @@ class CustomMoreInfo {
             internalConfig.cancel_button = false;
         }
 
+        // Script title ("Run script")
+        if (
+            this._anyConfigMatch(
+                this._config?.hide_script_title,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.script_title = true;
+        }
+
+        if (
+            this._anyConfigMatch(
+                this._config?.unhide_script_title,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.script_title = false;
+        }
+
         this._conditionalConfig[entityId] = {
             hide_history: internalConfig.history,
             hide_logbook: internalConfig.logbook,
@@ -757,6 +784,7 @@ class CustomMoreInfo {
             hide_header_more_menu: internalConfig.header_more_menu,
             hide_state_header: internalConfig.state_header,
             hide_cancel_button: internalConfig.cancel_button,
+            hide_script_title: internalConfig.script_title,
             maximized_size: internalConfig.maximized_size
         };
 
