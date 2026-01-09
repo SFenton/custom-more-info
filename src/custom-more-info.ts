@@ -317,10 +317,10 @@ class CustomMoreInfo {
             });
         // Query for state header (shows "Idle", timestamps, etc.)
         if (internalConfig.hide_state_header) {
+            // Use deepQuery directly from HA_DIALOG_CONTENT since we need to traverse
+            // multiple shadow roots: ha-more-info-info > more-info-content > more-info-script
             HA_DIALOG_CONTENT
                 .selector
-                .$
-                .query(SELECTOR.MORE_INFO_CONTENT)
                 .deepQuery(SELECTOR.MORE_INFO_STATE_HEADER)
                 .element
                 .then((stateHeader: Element): void => {
@@ -328,7 +328,7 @@ class CustomMoreInfo {
                     if (stateHeader) {
                         this._debug('state header has been found');
                         this._debug(stateHeader);
-                        const container = stateHeader.parentElement || stateHeader.getRootNode() as ShadowRoot;
+                        const container = stateHeader.getRootNode() as ShadowRoot;
                         addStyle(container, getHiddenStyle(SELECTOR.MORE_INFO_STATE_HEADER));
                     } else {
                         this._debug('this dialog does not have a state header or it has not been found.');
