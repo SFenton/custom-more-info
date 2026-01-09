@@ -18,7 +18,8 @@ export enum SELECTOR {
     MORE_INFO_HEADER_HISTORY_ICON = 'ha-icon-button[data-custom-selector="DIALOG_HISTORY"]',
     MORE_INFO_HEADER_SETTINGS_ICON = 'ha-icon-button[data-custom-selector="DIALOG_SETTINGS"]',
     MORE_INFO_HEADER_MORE_MENU = 'ha-button-menu',
-    MORE_INFO_STATE_HEADER = 'ha-more-info-state-header'
+    MORE_INFO_STATE_HEADER = 'ha-more-info-state-header',
+    SCRIPT_QUEUE = '.queue'
 }
 
 export enum MENU {

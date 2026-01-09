@@ -329,7 +329,12 @@ class CustomMoreInfo {
                         this._debug('state header has been found');
                         this._debug(stateHeader);
                         const container = stateHeader.getRootNode() as ShadowRoot;
-                        addStyle(container, getHiddenStyle(SELECTOR.MORE_INFO_STATE_HEADER));
+                        // Hide both the state header and the queue div
+                        const styles = [
+                            getHiddenStyle(SELECTOR.MORE_INFO_STATE_HEADER),
+                            getHiddenStyle(SELECTOR.SCRIPT_QUEUE)
+                        ].join('');
+                        addStyle(container, styles);
                     } else {
                         this._debug('this dialog does not have a state header or it has not been found.');
                     }
