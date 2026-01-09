@@ -58,6 +58,8 @@ export interface CustomMoreInfoConfig {
     unhide_header_more_menu?: ConditionalFilter;
     hide_state_header?: ConditionalFilter;
     unhide_state_header?: ConditionalFilter;
+    hide_cancel_button?: ConditionalFilter;
+    unhide_cancel_button?: ConditionalFilter;
     maximized_size?: ConditionalFilter;
     default_size?: ConditionalFilter;
 }
@@ -74,6 +76,7 @@ export interface InternalConfig {
     hide_header_settings_icon: boolean;
     hide_header_more_menu: boolean;
     hide_state_header: boolean;
+    hide_cancel_button: boolean;
     maximized_size: boolean;
 }
 

@@ -316,7 +316,7 @@ class CustomMoreInfo {
                 }
             });
         // Query for state header (shows "Idle", timestamps, etc.)
-        if (internalConfig.hide_state_header) {
+        if (internalConfig.hide_state_header || internalConfig.hide_cancel_button) {
             // Use deepQuery directly from HA_DIALOG_CONTENT since we need to traverse
             // multiple shadow roots: ha-more-info-info > more-info-content > more-info-script
             HA_DIALOG_CONTENT
@@ -329,12 +329,18 @@ class CustomMoreInfo {
                         this._debug('state header has been found');
                         this._debug(stateHeader);
                         const container = stateHeader.getRootNode() as ShadowRoot;
-                        // Hide both the state header and the queue div
-                        const styles = [
-                            getHiddenStyle(SELECTOR.MORE_INFO_STATE_HEADER),
-                            getHiddenStyle(SELECTOR.SCRIPT_QUEUE)
-                        ].join('');
-                        addStyle(container, styles);
+                        // Build styles array based on what should be hidden
+                        const styles: string[] = [];
+                        if (internalConfig.hide_state_header) {
+                            styles.push(getHiddenStyle(SELECTOR.MORE_INFO_STATE_HEADER));
+                            styles.push(getHiddenStyle(SELECTOR.SCRIPT_QUEUE));
+                        }
+                        if (internalConfig.hide_cancel_button) {
+                            styles.push(getHiddenStyle(SELECTOR.SCRIPT_CANCEL_BUTTON));
+                        }
+                        if (styles.length > 0) {
+                            addStyle(container, styles.join(''));
+                        }
                     } else {
                         this._debug('this dialog does not have a state header or it has not been found.');
                     }
@@ -530,6 +536,7 @@ class CustomMoreInfo {
             header_settings_icon: false,
             header_more_menu: false,
             state_header: false,
+            cancel_button: false,
             maximized_size: false
         };
 
@@ -714,6 +721,29 @@ class CustomMoreInfo {
             internalConfig.state_header = false;
         }
 
+        // Cancel button in script dialogs
+        if (
+            this._anyConfigMatch(
+                this._config?.hide_cancel_button,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.cancel_button = true;
+        }
+
+        if (
+            this._anyConfigMatch(
+                this._config?.unhide_cancel_button,
+                entityId,
+                deviceClass,
+                domain
+            )
+        ) {
+            internalConfig.cancel_button = false;
+        }
+
         this._conditionalConfig[entityId] = {
             hide_history: internalConfig.history,
             hide_logbook: internalConfig.logbook,
@@ -726,6 +756,7 @@ class CustomMoreInfo {
             hide_header_settings_icon: internalConfig.header_settings_icon,
             hide_header_more_menu: internalConfig.header_more_menu,
             hide_state_header: internalConfig.state_header,
+            hide_cancel_button: internalConfig.cancel_button,
             maximized_size: internalConfig.maximized_size
         };
 
